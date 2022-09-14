@@ -4,15 +4,34 @@ $("#currentDay").text("Today is " + moment().format("dddd, MMMM Do"));
 // keeping the save button in a vareable
 let saveBtn = $(".save-btn");
 
+// checks the time and changes the color of the blocks to match if it is in the past present or future
+function colors() {
+  let currentTime = moment().hours();
+
+  $(".time-block").each(function () {
+    let todoTime = parseInt($(this).attr("id"));
+
+    if (currentTime > todoTime) {
+      $(this).addClass("past");
+    } else if (currentTime === todoTime) {
+      $(this).addClass("present");
+    } else {
+      $(this).addClass("future");
+    }
+  });
+}
+colors();
+
+// finds the hour of each box and checks local storage for saved todos
 function loadTodo() {
-    $('.hour').each(function() {  //*goes through each .hour and check to see if there is existing data in local storage
-        let todoHour = $(this).text();
-        let previousTodo = localStorage.getItem(todoHour);
-        if (todoHour !== null) {
-            $(this).siblings('.time-block').val(previousTodo);
-        }
-    })
-};
+  $(".hour").each(function () {
+    let todoHour = $(this).text();
+    let previousTodo = localStorage.getItem(todoHour);
+    if (todoHour !== null) {
+      $(this).siblings(".time-block").val(previousTodo);
+    }
+  });
+}
 loadTodo();
 
 // when a save button is clicked it finds which one and saves it to local storage
